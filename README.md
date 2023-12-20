@@ -1,4 +1,4 @@
-# Formula-1-Lap-Prector
+# Formula-1-Lap-Predictor
 ![formula1](./Materials/f1_logo.png)
 ![fia](./Materials/fia_logo.png)
 
