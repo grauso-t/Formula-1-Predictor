@@ -28,6 +28,6 @@ merge3 = merge3.drop(['constructorId'], axis=1)
 
 merge4 = pd.merge(merge3, status, how='left', on=['statusId'])
 
-merge5 = pd.merge(merge4, circuit, how='left', on=['circuitId'])
+#merge5 = pd.merge(merge4, circuit, how='left', on=['circuitId'])
 
-merge5.to_csv('merged_dataset_races.csv', index=False)
+merge4.to_csv('merged_dataset_races.csv', index=False)
