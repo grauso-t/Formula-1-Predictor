@@ -1,29 +1,36 @@
 import pandas as pd
-import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.impute import SimpleImputer
 
-dataset = pd.read_csv(r'./merged_dataset_races.csv', low_memory=False)
+# Carica i dati
+data = pd.read_csv("merged_dataset_races.csv", low_memory=False)
+data.replace("\\N", pd.NA, inplace=True)
 
-dataset['date'] = pd.to_datetime(dataset['date'])
+# Prepara i dati
+features = ['lap', 'position_lap', 'milliseconds_lap', 'number', 'grid', 'rank', 'fastestLap', 'fastestLapTime', 'fastestLapSpeed']
+target = 'positionOrder'
 
-# Filtra il DataFrame eliminando le righe con 'date' minore di '2020-01-01'
-dataset = dataset[dataset['date'] >= '2022-01-01']
+X = data[features]
+y = data[target]
 
-nan_mask = dataset.applymap(lambda x: x == '\\N')
-nan_count = nan_mask.sum()
+# Sostituisci i valori mancanti con la media della colonna
+imputer = SimpleImputer(strategy='mean')
+X = imputer.fit_transform(X)
 
-print(nan_count)
+# Suddividi i dati in set di addestramento e test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Raggruppa per 'driverId' e conta le occorrenze
-conteggio_per_id = dataset.groupby('driverId').size().reset_index(name='numero_occorrenze')
+# Crea il modello
+model = RandomForestClassifier(n_estimators=100, random_state=42)
 
-# Crea un grafico a barre
-plt.bar(conteggio_per_id['driverId'], conteggio_per_id['numero_occorrenze'])
-plt.xlabel('Driver ID')
-plt.ylabel('Numero di Occorrenze')
-plt.title('Conteggio delle Occorrenze per Driver ID')
-plt.show()
+# Addestra il modello
+model.fit(X_train, y_train)
 
-conteggio_per_id = dataset.groupby('driverId').size().reset_index(name='numero_occorrenze')
+# Effettua predizioni sul set di test
+predictions = model.predict(X_test)
 
-print(len(conteggio_per_id[(conteggio_per_id['numero_occorrenze'] > 2000)]))
-print(len(conteggio_per_id[(conteggio_per_id['numero_occorrenze'] <= 2000)]))
+# Valuta le prestazioni del modello
+accuracy = accuracy_score(y_test, predictions)
+print(f'Accuracy: {accuracy}')
