@@ -1,36 +1,42 @@
+# Import delle librerie
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.impute import SimpleImputer
+from sklearn.metrics import classification_report, accuracy_score
 
-# Carica i dati
-data = pd.read_csv("merged_dataset_races.csv", low_memory=False)
-data.replace("\\N", pd.NA, inplace=True)
+# Caricamento dei dati
+# Assicurati che il tuo dataset sia in formato CSV o un altro formato supportato da pandas
+data = pd.read_csv('./merged_dataset_races.csv')
 
-# Prepara i dati
-features = ['lap', 'position_lap', 'milliseconds_lap', 'number', 'grid', 'rank', 'fastestLap', 'fastestLapTime', 'fastestLapSpeed']
-target = 'positionOrder'
+data = data.replace('\\N', pd.NA)
+data = data.apply(pd.to_numeric, errors='coerce')
+data.fillna(data.median(), inplace=True)
 
-X = data[features]
-y = data[target]
+# Preparazione dei dati
+# Seleziona le colonne rilevanti per l'addestramento del modello
+selected_columns = ['lap', 'position_lap', 'milliseconds_lap', 'grid', 'positionOrder', 'fastestLap', 'rank', 'fastestLapSpeed', 'statusId']
 
-# Sostituisci i valori mancanti con la media della colonna
-imputer = SimpleImputer(strategy='mean')
-X = imputer.fit_transform(X)
+# Elimina le righe con valori mancanti, se presenti
+data = data[selected_columns].dropna()
 
-# Suddividi i dati in set di addestramento e test
+# Definizione delle variabili indipendenti (X) e dipendenti (y)
+X = data.drop('positionOrder', axis=1)
+y = data['positionOrder']
+
+# Suddivisione del dataset in set di addestramento e test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Crea il modello
+# Creazione del modello
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 
-# Addestra il modello
+# Addestramento del modello
 model.fit(X_train, y_train)
 
-# Effettua predizioni sul set di test
-predictions = model.predict(X_test)
-
-# Valuta le prestazioni del modello
-accuracy = accuracy_score(y_test, predictions)
+# Valutazione del modello
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
 print(f'Accuracy: {accuracy}')
+
+# Visualizzazione del report di classificazione
+classification_rep = classification_report(y_test, y_pred)
+print('Classification Report:\n', classification_rep)
