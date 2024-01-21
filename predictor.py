@@ -8,10 +8,10 @@ from sklearn.pipeline import Pipeline
 import os
 
 # Carica il dataset completo
-dataset = pd.read_csv('aaaaa.csv')
+dataset = pd.read_csv('./merged_dataset_races.csv')
 
 # Creazione del vettore da 1 a 20
-drivers = [1, 855, 8, 20, 839, 807, 830, 832, 840, 847, 848, 849, 13, 4]
+drivers = [1, 855, 20, 839, 807, 830, 832, 840, 847, 848, 849, 13, 4]
 myMap = {}
 
 for pilota in drivers:
@@ -24,16 +24,18 @@ counter = 0
 for counter in range (0, 14):
     # Applica i filtri desiderati, ad esempio, consideriamo solo i record con driverId=1 e circuitId=1
     print("Iterazione" + str(counter) + "-" + str(drivers[counter]))
-    filtered_data = dataset[(dataset['driverId'] == drivers[counter]) & (dataset['circuitId_x'] == 14)]
+    filtered_data = dataset[(dataset['driverId'] == drivers[counter]) & (dataset['circuitId'] == 3)]
     print("Iterazione" + str(counter))
 
     # Seleziona solo le colonne desiderate
-    selected_columns = ['driverId', 'circuitId_x', 'milliseconds']
+    selected_columns = ['driverId', 'circuitId', 'time_lap']
     df = filtered_data[selected_columns]
 
+    df.to_csv('aaaaa.csv', index=False)
+
     # Seleziona le colonne necessarie
-    features = ['driverId', 'circuitId_x', 'milliseconds']
-    target = 'milliseconds'  # ora prevediamo direttamente i tempi dei giri
+    features = ['driverId', 'circuitId', 'time_lap']
+    target = 'time_lap'  # ora prevediamo direttamente i tempi dei giri
 
     # Crea il set di addestramento e di test
     X_train, X_test, y_train, y_test = train_test_split(df[features], df[target], test_size=0.2, random_state=42)
@@ -71,5 +73,3 @@ for counter in range (0, 14):
     print("Tempo convertito:", formatted_time)
 
     myMap[counter] = milliseconds
-
-
