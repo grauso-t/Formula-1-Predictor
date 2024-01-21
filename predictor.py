@@ -1,42 +1,75 @@
-# Import delle librerie
+# Importa le librerie necessarie
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+import os
 
-# Caricamento dei dati
-# Assicurati che il tuo dataset sia in formato CSV o un altro formato supportato da pandas
-data = pd.read_csv('./merged_dataset_races.csv')
+# Carica il dataset completo
+dataset = pd.read_csv('aaaaa.csv')
 
-data = data.replace('\\N', pd.NA)
-data = data.apply(pd.to_numeric, errors='coerce')
-data.fillna(data.median(), inplace=True)
+# Creazione del vettore da 1 a 20
+drivers = [1, 855, 8, 20, 839, 807, 830, 832, 840, 847, 848, 849, 13, 4]
+myMap = {}
 
-# Preparazione dei dati
-# Seleziona le colonne rilevanti per l'addestramento del modello
-selected_columns = ['lap', 'position_lap', 'milliseconds_lap', 'grid', 'positionOrder', 'fastestLap', 'rank', 'fastestLapSpeed', 'statusId']
+for pilota in drivers:
+    myMap[pilota] = 0
 
-# Elimina le righe con valori mancanti, se presenti
-data = data[selected_columns].dropna()
+print(myMap)
 
-# Definizione delle variabili indipendenti (X) e dipendenti (y)
-X = data.drop('positionOrder', axis=1)
-y = data['positionOrder']
+counter = 0
 
-# Suddivisione del dataset in set di addestramento e test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+for counter in range (0, 14):
+    # Applica i filtri desiderati, ad esempio, consideriamo solo i record con driverId=1 e circuitId=1
+    print("Iterazione" + str(counter) + "-" + str(drivers[counter]))
+    filtered_data = dataset[(dataset['driverId'] == drivers[counter]) & (dataset['circuitId_x'] == 14)]
+    print("Iterazione" + str(counter))
 
-# Creazione del modello
-model = RandomForestClassifier(n_estimators=100, random_state=42)
+    # Seleziona solo le colonne desiderate
+    selected_columns = ['driverId', 'circuitId_x', 'milliseconds']
+    df = filtered_data[selected_columns]
 
-# Addestramento del modello
-model.fit(X_train, y_train)
+    # Seleziona le colonne necessarie
+    features = ['driverId', 'circuitId_x', 'milliseconds']
+    target = 'milliseconds'  # ora prevediamo direttamente i tempi dei giri
 
-# Valutazione del modello
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print(f'Accuracy: {accuracy}')
+    # Crea il set di addestramento e di test
+    X_train, X_test, y_train, y_test = train_test_split(df[features], df[target], test_size=0.2, random_state=42)
 
-# Visualizzazione del report di classificazione
-classification_rep = classification_report(y_test, y_pred)
-print('Classification Report:\n', classification_rep)
+    # Definisci la trasformazione delle colonne
+    preprocessor = StandardScaler()
+
+    # Crea il modello di regressione
+    model = Pipeline(steps=[('preprocessor', preprocessor),
+                            ('regressor', LinearRegression())])
+
+    # Addestra il modello
+    model.fit(X_train, y_train)
+
+    # Fai le previsioni sui dati di test
+    predictions = model.predict(X_test)
+
+    # Ottieni solo la prima previsione (considerando solo un prossimo giro)
+    next_lap_prediction = predictions[0]
+
+    # Stampa la previsione per il prossimo giro
+    print("Ecco il prossimo giro:", next_lap_prediction)
+
+
+    # Converti millisecondi a secondi
+    seconds, milliseconds = divmod(next_lap_prediction, 1000)
+
+    # Converti secondi a minuti e ore
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+
+    # Formatta il risultato
+    formatted_time = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
+
+    print("Tempo convertito:", formatted_time)
+
+    myMap[counter] = milliseconds
+
+
