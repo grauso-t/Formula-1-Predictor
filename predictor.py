@@ -31,7 +31,7 @@ for counter in range (0, 14):
     selected_columns = ['driverId', 'circuitId', 'time_lap']
     df = filtered_data[selected_columns]
 
-    df.to_csv('aaaaa.csv', index=False)
+    df.to_csv('test.csv', index=False)
 
     # Seleziona le colonne necessarie
     features = ['driverId', 'circuitId', 'time_lap']
