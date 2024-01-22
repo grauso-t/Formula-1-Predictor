@@ -32,6 +32,6 @@ new_order = ['raceId', 'driverId', 'driver_name', 'circuitId', 'cirtuit_name', '
 
 merge4 = merge4[new_order]
 
-ds_final = merge4[merge4['race_date'] > '2022-01-01']
+ds_final = merge4[merge4['race_date'] >= '2022-01-01']
 
 ds_final.to_csv('merged_dataset_races.csv', index=False)

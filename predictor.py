@@ -5,10 +5,9 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
-import os
 
 # Carica il dataset completo
-dataset = pd.read_csv('./merged_dataset_races.csv')
+dataset = pd.read_csv('./merged_dataset_races_balanced.csv')
 
 # Creazione del vettore da 1 a 20
 drivers = [1, 855, 20, 839, 807, 830, 832, 840, 847, 848, 849, 13, 4]
