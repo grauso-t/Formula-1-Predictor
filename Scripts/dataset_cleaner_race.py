@@ -4,6 +4,7 @@ import requests_cache
 
 from retry_requests import retry
 
+# Apertura dei file datasets
 lap_times = pd.read_csv(r'./Datasets/lap_times.csv', low_memory=False)
 results = pd.read_csv(r'./Datasets/results.csv', low_memory=False)
 drivers = pd.read_csv(r'./Datasets/drivers.csv', low_memory=False)
@@ -11,6 +12,7 @@ races = pd.read_csv(r'./Datasets/races.csv', low_memory=False)
 status = pd.read_csv(r'./Datasets/status.csv', low_memory=False)
 circuits = pd.read_csv(r'./Datasets/circuits.csv', low_memory=False)
 
+# Operazioni di merge e pulizia dei datasets
 merge1 = pd.merge(lap_times, drivers, how='left', on=['driverId'])
 merge1['driver_name'] = merge1['forename'] + ' ' + merge1['surname']
 merge1 = merge1.rename(columns={'number': f'number_driver', 'milliseconds': f'time_lap', 'position': f'position_lap'})
@@ -21,27 +23,27 @@ merge2 = merge2.rename(columns={'time': f'time_race'})
 merge2 = merge2.drop(['year', 'round', 'url', 'fp1_date', 'fp1_time', 'fp2_date', 'fp2_time', 'fp3_date', 'fp3_time', 'quali_date', 'quali_time', 'sprint_date', 'sprint_time'], axis=1)
 
 merge3 = pd.merge(merge2, results, how='left', on=['raceId', 'driverId'])
-merge3 = merge3.rename(columns={'name': f'cirtuit_name'})
-merge3 = merge3.drop(['constructorId', 'resultId','number', 'grid', 'position', 'positionText', 'positionOrder', 'points', 'laps', 'time', 'milliseconds', 'fastestLap', 'rank', 'fastestLapTime', 'fastestLapSpeed'], axis=1)
+merge3 = merge3.rename(columns={'name': f'circuit_name'})
+merge3 = merge3.drop(['resultId','number', 'grid', 'position', 'positionText', 'positionOrder', 'points', 'laps', 'time', 'milliseconds', 'fastestLap', 'rank', 'fastestLapTime', 'fastestLapSpeed'], axis=1)
 
 merge4 = pd.merge(merge3, status, how='left', on=['statusId'])
 merge4 = merge4.rename(columns={'date': f'race_date'})
 
 merge5 = pd.merge(merge4, circuits, how='left', on=['circuitId'])
+merge5 = merge5.drop(['circuitRef', 'name', 'location', 'country', 'url'], axis=1)
 
 ds_final = merge5[merge5['race_date'] >= '2022-01-01']
 
 grouped_ds = ds_final.groupby('raceId')
 
-# Setup the Open-Meteo API client with cache and retry on error
+# Configurazione delle API Open-Meteo
 cache_session = requests_cache.CachedSession('.cache', expire_after=-1)
 retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
 openmeteo = openmeteo_requests.Client(session=retry_session)
 
-# Create an empty DataFrame to store the final results
 final_results = pd.DataFrame()
 
-# Iterate over groups
+# Iterazione sui gruppi, in modo da eseguire meno richieste alle API
 for race_id, group_df in grouped_ds:
 
     latitude = str(group_df['lat'].iloc[0])
@@ -59,6 +61,7 @@ for race_id, group_df in grouped_ds:
         "hourly": ["weather_code"]
     }
 
+    # Operazioni per ottenere il meteo per ogni data
     responses = openmeteo.weather_api(url, params=params)
     response = responses[0]
     hourly = response.Hourly()
@@ -73,9 +76,9 @@ for race_id, group_df in grouped_ds:
     hourly_data["weather_code"] = hourly_weather_code
     group_df['weather_code'] = hourly_data["weather_code"][hour]
     
-    # Append the modified group DataFrame to the final results
     final_results = final_results._append(group_df, ignore_index=True)
 
+# Mapping codice meteo
 wmo_mapping = {
     0: 'Clear sky',
     1: 'Mainly clear',
@@ -111,10 +114,15 @@ wmo_mapping = {
     75: 'Tornado',
 }
 
+# Conversione dei weather_code in descrizione testuale
 final_results['weather_description'] = final_results['weather_code'].map(wmo_mapping)
 
-new_order = ['raceId', 'driverId', 'driver_name', 'circuitId', 'cirtuit_name', 'race_date', 'time_race', 'lap', 'position_lap', 'time_lap', 'statusId', 'status', 'weather_code', 'weather_description']
+# Ordinamento del dataset
+new_order = ['raceId', 'driverId', 'driver_name', 'circuitId', 'circuit_name', 'race_date', 'time_race', 'lap', 'position_lap', 'time_lap', 'statusId', 'status', 'weather_code', 'weather_description']
 final_results = final_results[new_order]
 
-# Save the final results to a CSV file
+# Conversione dei millisecondi in decimi di secondo
+final_results['time_lap'] = final_results['time_lap'] / 100
+
+# Salvataggio del dataset finale
 final_results.to_csv('merged_dataset_races.csv', index=False)
