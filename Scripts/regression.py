@@ -8,17 +8,17 @@ from sklearn.pipeline import make_pipeline
 from sklearn.metrics import root_mean_squared_error
 import joblib
 
-# Carica il dataset
+# Caricamento dataset
 data = pd.read_csv("balanced_dataset.csv")
 
-# Seleziona le colonne predittive (features) e la variabile target
+# Selezione features e la variabile target
 X = data[['driverId', 'circuitId', 'lap', 'weather_code']]
 y = data['time_lap']
 
-# Suddividi i dati in set di addestramento e test
+# Suddivisione dati in set di addestramento e test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Crea e addestra lo scaler sui dati di addestramento
+# Addestramento scaler sui dati di addestramento
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 
@@ -43,7 +43,7 @@ rf_rmse = root_mean_squared_error(y_test, rf_pred)
 svr_rmse = root_mean_squared_error(y_test, svr_pred)
 mlp_rmse = root_mean_squared_error(y_test, mlp_pred)
 
-# Salva i modelli e lo scaler
+# Salvataggio modelli e scaler
 joblib.dump(rf_model, 'rf_model.pkl')
 joblib.dump(svr_model, 'svr_model.pkl')
 joblib.dump(mlp_model, 'mlp_model.pkl')
@@ -53,10 +53,10 @@ print("Modelli addestrati e salvati con successo.")
 
 input_data = pd.DataFrame({'driverId': [844], 'circuitId': [3], 'lap': [3], 'weather_code': [0.0]})
 
-# Applica lo scaler ai dati di input
+# Applicazione dello scaler ai dati di input
 input_data_scaled = scaler.transform(input_data)
 
-# Effettua le previsioni utilizzando i modelli
+# Previsioni
 rf_prediction = rf_model.predict(input_data_scaled)
 svr_prediction = svr_model.predict(input_data_scaled)
 mlp_prediction = mlp_model.predict(input_data_scaled)

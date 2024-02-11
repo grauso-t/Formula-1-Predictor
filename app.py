@@ -1,42 +1,86 @@
-from flask import Flask, render_template, request, jsonify
-import pandas as pd
+from flask import Flask, request, render_template
 import joblib
+import pandas as pd
 
 app = Flask(__name__)
 
-# Carica i modelli e lo scaler salvati
+# Caricamento modello regressione e scaler
 rf_model = joblib.load('rf_model.pkl')
-svr_model = joblib.load('svr_model.pkl')
-mlp_model = joblib.load('mlp_model.pkl')
 scaler = joblib.load('scaler.pkl')
-
-# Funzione per fare previsioni
-def make_prediction(driverId, circuitId, lap, weather_code):
-    input_data = pd.DataFrame({'driverId': [driverId], 'circuitId': [circuitId], 'lap': [lap], 'weather_code': [weather_code]})
-    input_data_scaled = scaler.transform(input_data)
-    rf_prediction = rf_model.predict(input_data_scaled)[0]
-    svr_prediction = svr_model.predict(input_data_scaled)[0]
-    mlp_prediction = mlp_model.predict(input_data_scaled)[0]
-    return rf_prediction, svr_prediction, mlp_prediction
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    driverId = float(request.form['driverId'])
-    circuitId = float(request.form['circuitId'])
-    lap = float(request.form['lap'])
-    weather_code = float(request.form['weather_code'])
+@app.route('/api/data', methods=['POST'])
+def handle_data():
     
-    rf_prediction, svr_prediction, mlp_prediction = make_prediction(driverId, circuitId, lap, weather_code)
-    
-    return jsonify({
-        'rf_prediction': rf_prediction,
-        'svr_prediction': svr_prediction,
-        'mlp_prediction': mlp_prediction
-    })
+    # Dizionario per mappare gli ID dei piloti ai loro nomi
+    piloti_nomi = {
+        1: "Lewis Hamilton",
+        4: "Fernando Alonso",
+        20: "Sebastian Vettel",
+        807: "Nico Hülkenberg",
+        815: "Sergio Pérez",
+        817: "Daniel Ricciardo",
+        822: "Valtteri Bottas",
+        825: "Kevin Magnussen",
+        830: "Max Verstappen",
+        832: "Carlos Sainz",
+        839: "Esteban Ocon",
+        840: "Lance Stroll",
+        842: "Pierre Gasly",
+        844: "Charles Leclerc",
+        846: "Lando Norris",
+        847: "George Russell",
+        848: "Alexander Albon",
+        849: "Nicholas Latifi",
+        852: "Yuki Tsunoda",
+        854: "Mick Schumacher",
+        855: "Guanyu Zhou",
+        856: "Nyck de Vries",
+        857: "Oscar Piastri",
+        858: "Logan Sargeant"
+    }
+
+    # Valori inviati dal form
+    circuito = request.form.get('circuito')
+    meteo = request.form.get('meteo')
+    numGiri = int(request.form.get('numGiri'))
+
+    # Valori dei piloti
+    piloti_ids = [int(request.form.get(f'pilota{i}')) for i in range(1, len(request.form)+1) if f'pilota{i}' in request.form]
+
+    # Lista tempi totali per ogni pilota
+    tempi_totali = []
+
+    # Simulazione giri per ogni pilota
+    for pilota_id in piloti_ids:
+        pilota_nome = piloti_nomi.get(pilota_id, f"Pilota con ID {pilota_id}")
+        tempo_totale = 0
+        for giro in range(1, numGiri+1):
+            input_data = pd.DataFrame({'driverId': [pilota_id], 'circuitId': [circuito], 'lap': [giro], 'weather_code': [meteo]})
+            scaled_input = scaler.transform(input_data)
+            lap_time = rf_model.predict(scaled_input)
+            tempo_totale += lap_time[0]
+            
+        # Conversione tempo_totale in ore:minuti:secondi:decimi
+        ore, resto = divmod(tempo_totale / 10, 3600)
+        minuti, resto = divmod(resto, 60)
+        secondi = resto // 1
+        decimi = tempo_totale % 10
+        tempo_convertito = f"{int(ore):02d}:{int(minuti):02d}:{int(secondi):02d}.{int(decimi)}"
+        tempi_totali.append((pilota_nome, tempo_convertito))
+
+    # Ordina i tempi totali in ordine crescente
+    tempi_totali.sort(key=lambda x: x[1])
+
+    # Restituzione tempi totali ordinati come stringa
+    result = "\n".join([f"{pilota}: {tempo}" for pilota, tempo in tempi_totali])
+    print(result)
+
+    # Non restituiamo alcuna risposta al client
+    return result
 
 if __name__ == '__main__':
     app.run(debug=True)
