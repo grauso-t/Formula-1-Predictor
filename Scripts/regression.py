@@ -5,14 +5,14 @@ from sklearn.svm import SVR
 from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
-from sklearn.metrics import root_mean_squared_error
+from sklearn.metrics import mean_absolute_error
 import joblib
 
 # Caricamento dataset
 data = pd.read_csv("balanced_dataset.csv")
 
 # Selezione features e la variabile target
-X = data[['driverId', 'circuitId', 'lap', 'weather_code']]
+X = data[['driverId', 'circuitId', 'weather_code']]
 y = data['time_lap']
 
 # Suddivisione dati in set di addestramento e test
@@ -20,6 +20,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Addestramento scaler sui dati di addestramento
 scaler = StandardScaler()
+scaler.fit(X, X.columns)
 X_train_scaled = scaler.fit_transform(X_train)
 
 # Addestramento del modello RandomForestRegressor
@@ -39,9 +40,13 @@ rf_pred = rf_model.predict(X_test)
 svr_pred = svr_model.predict(X_test)
 mlp_pred = mlp_model.predict(X_test)
 
-rf_rmse = root_mean_squared_error(y_test, rf_pred)
-svr_rmse = root_mean_squared_error(y_test, svr_pred)
-mlp_rmse = root_mean_squared_error(y_test, mlp_pred)
+rf_rmse = mean_absolute_error(y_test, rf_pred)
+svr_rmse = mean_absolute_error(y_test, svr_pred)
+mlp_rmse = mean_absolute_error(y_test, mlp_pred)
+
+print("mean_absolute_error in secondi", rf_rmse / 1000)
+print("mean_absolute_error in secondi", svr_rmse / 1000)
+print("mean_absolute_error in secondi", mlp_rmse / 1000)
 
 # Salvataggio modelli e scaler
 joblib.dump(rf_model, 'rf_model.pkl')
@@ -51,7 +56,7 @@ joblib.dump(scaler, 'scaler.pkl')
 
 print("Modelli addestrati e salvati con successo.")
 
-input_data = pd.DataFrame({'driverId': [844], 'circuitId': [3], 'lap': [3], 'weather_code': [0.0]})
+input_data = pd.DataFrame({'driverId': [844], 'circuitId': [3], 'weather_code': [0.0]})
 
 # Applicazione dello scaler ai dati di input
 input_data_scaled = scaler.transform(input_data)

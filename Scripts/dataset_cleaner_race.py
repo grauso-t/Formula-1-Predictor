@@ -32,6 +32,12 @@ merge4 = merge4.rename(columns={'date': f'race_date'})
 merge5 = pd.merge(merge4, circuits, how='left', on=['circuitId'])
 merge5 = merge5.drop(['circuitRef', 'name', 'location', 'country', 'url'], axis=1)
 
+
+
+
+
+
+
 ds_final = merge5[merge5['race_date'] >= '2022-01-01']
 
 grouped_ds = ds_final.groupby('raceId')
@@ -81,37 +87,37 @@ for race_id, group_df in grouped_ds:
 # Mapping codice meteo
 wmo_mapping = {
     0: 'Clear sky',
-    1: 'Mainly clear',
-    2: 'Partly cloudy',
+    1: 'Clear sky',
+    2: 'Cloudy',
     3: 'Cloudy',
-    4: 'Overcast',
-    5: 'Mist',
-    10: 'Patchy fog',
-    45: 'Fog',
-    50: 'Freezing drizzle',
-    51: 'Drizzle',
-    52: 'Freezing rain',
+    4: 'Cloudy',
+    5: 'null',
+    10: 'null',
+    45: 'null',
+    50: 'Rain',
+    51: 'Rain',
+    52: 'Rain',
     53: 'Rain',
-    54: 'Snow',
-    55: 'Thunderstorm',
-    56: 'Sleet',
-    57: 'Hail',
-    58: 'Freezing spray',
-    60: 'Showers of rain',
-    61: 'Showers of snow',
-    62: 'Showers of rain and snow',
-    63: 'Showers of hail',
-    64: 'Showers of rain and hail',
-    65: 'Showers of snow and hail',
-    66: 'Showers of rain, snow, and hail',
-    67: 'Drizzle and rain',
-    68: 'Drizzle and snow',
-    70: 'Widespread dust',
-    71: 'Duststorm or sandstorm',
-    72: 'Volcanic ash',
-    73: 'Squalls',
-    74: 'Funnel cloud',
-    75: 'Tornado',
+    54: 'null',
+    55: 'Rain',
+    56: 'null',
+    57: 'null',
+    58: 'null',
+    60: 'Rain',
+    61: 'null',
+    62: 'Rain',
+    63: 'Rain',
+    64: 'Rain',
+    65: 'Rain',
+    66: 'Rain',
+    67: 'Rain',
+    68: 'Rain',
+    70: 'null',
+    71: 'null',
+    72: 'null',
+    73: 'null',
+    74: 'null',
+    75: 'null',
 }
 
 # Conversione dei weather_code in descrizione testuale
@@ -122,7 +128,7 @@ new_order = ['raceId', 'driverId', 'driver_name', 'circuitId', 'circuit_name', '
 final_results = final_results[new_order]
 
 # Conversione dei millisecondi in decimi di secondo
-final_results['time_lap'] = final_results['time_lap'] / 100
+# final_results['time_lap'] = final_results['time_lap'] / 100
 
 # Salvataggio del dataset finale
 final_results.to_csv('merged_dataset_races.csv', index=False)

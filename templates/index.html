@@ -96,9 +96,6 @@
             <option value="" disabled selected>Seleziona meteo</option>
         </select>
 
-        <label for="numGiri">Numero di Giri:</label><br>
-        <input type="number" id="numGiri" name="numGiri" min="1" max="100">
-
         <div class="grid-container" id="grid-container"></div>
 
         <button id="submit-btn" type="submit">Submit</button>
@@ -160,39 +157,11 @@
         ];
     
         const meteoOptions = [
-            { name: "Clear sky", value: "0" },
-            { name: "Mainly clear", value: "1" },
-            { name: "Partly cloudy", value: "2" },
-            { name: "Cloudy", value: "3" },
-            { name: "Overcast", value: "4" },
-            { name: "Mist", value: "5" },
-            { name: "Patchy fog", value: "10" },
-            { name: "Fog", value: "45" },
-            { name: "Freezing drizzle", value: "50" },
-            { name: "Drizzle", value: "51" },
-            { name: "Freezing rain", value: "52" },
-            { name: "Rain", value: "53" },
-            { name: "Snow", value: "54" },
-            { name: "Thunderstorm", value: "55" },
-            { name: "Sleet", value: "56" },
-            { name: "Hail", value: "57" },
-            { name: "Freezing spray", value: "58" },
-            { name: "Showers of rain", value: "60" },
-            { name: "Showers of snow", value: "61" },
-            { name: "Showers of rain and snow", value: "62" },
-            { name: "Showers of hail", value: "63" },
-            { name: "Showers of rain and hail", value: "64" },
-            { name: "Showers of snow and hail", value: "65" },
-            { name: "Showers of rain, snow, and hail", value: "66" },
-            { name: "Drizzle and rain", value: "67" },
-            { name: "Drizzle and snow", value: "68" },
-            { name: "Widespread dust", value: "70" },
-            { name: "Duststorm or sandstorm", value: "71" },
-            { name: "Volcanic ash", value: "72" },
-            { name: "Squalls", value: "73" },
-            { name: "Funnel cloud", value: "74" },
-            { name: "Tornado", value: "75" }
+            { name: "Clear sky", value: ["0", "1"] },
+            { name: "Cloudy", value: ["2", "3", "4"] },
+            { name: "Rain", value: ["50", "51", "52", "53", "55", "60", "62", "63", "64", "65", "66", "67", "68"] }
         ];
+
     
         // Ordinamento array in ordine alfabetico
         piloti.sort((a, b) => a.name.localeCompare(b.name));
@@ -262,7 +231,7 @@
             const headerCell1 = document.createElement('th');
             headerCell1.textContent = 'Pilota';
             const headerCell2 = document.createElement('th');
-            headerCell2.textContent = 'Tempo';
+            headerCell2.textContent = 'Tempo Previsto';
             headerRow.appendChild(headerCell1);
             headerRow.appendChild(headerCell2);
             tableHead.appendChild(headerRow);

@@ -45,8 +45,7 @@ def handle_data():
 
     # Valori inviati dal form
     circuito = request.form.get('circuito')
-    meteo = request.form.get('meteo')
-    numGiri = int(request.form.get('numGiri'))
+    meteo = float(request.form.get('meteo').split(",")[0])
 
     # Valori dei piloti
     piloti_ids = [int(request.form.get(f'pilota{i}')) for i in range(1, len(request.form)+1) if f'pilota{i}' in request.form]
@@ -57,20 +56,17 @@ def handle_data():
     # Simulazione giri per ogni pilota
     for pilota_id in piloti_ids:
         pilota_nome = piloti_nomi.get(pilota_id, f"Pilota con ID {pilota_id}")
-        tempo_totale = 0
-        for giro in range(1, numGiri+1):
-            input_data = pd.DataFrame({'driverId': [pilota_id], 'circuitId': [circuito], 'lap': [giro], 'weather_code': [meteo]})
-            scaled_input = scaler.transform(input_data)
-            lap_time = rf_model.predict(scaled_input)
-            tempo_totale += lap_time[0]
+        input_data = pd.DataFrame({'driverId': [pilota_id], 'circuitId': [circuito], 'weather_code': [meteo]})
+        scaled_input = scaler.transform(input_data)
+        tempo_totale = rf_model.predict(scaled_input)
             
-        # Conversione tempo_totale in ore:minuti:secondi:decimi
-        ore, resto = divmod(tempo_totale / 10, 3600)
-        minuti, resto = divmod(resto, 60)
-        secondi = resto // 1
-        decimi = tempo_totale % 10
-        tempo_convertito = f"{int(ore):02d}:{int(minuti):02d}:{int(secondi):02d}.{int(decimi)}"
+        millisecondi = int(tempo_totale)
+        secondi, millisecondi = divmod(millisecondi, 1000)
+        minuti, secondi = divmod(secondi, 60)
+        millisecondi = f"{millisecondi:03d}"
+        tempo_convertito = f"{int(minuti):02d}:{int(secondi):02d}.{millisecondi}"
         tempi_totali.append((pilota_nome, tempo_convertito))
+
 
     # Ordina i tempi totali in ordine crescente
     tempi_totali.sort(key=lambda x: x[1])

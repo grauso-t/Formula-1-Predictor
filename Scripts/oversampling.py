@@ -19,11 +19,11 @@ for driver_id, group in balanced_df.groupby('driverId'):
         additional_samples = group.sample(n=additional_laps, replace=True)
         balanced_df = pd.concat([balanced_df, additional_samples])
         print(f"Added {additional_laps} laps for driver {group['driver_name'].iloc[0]}")
-    elif num_laps > desired_laps:
+    # elif num_laps > desired_laps:
         # Remove laps
-        remove_indices = group.sample(n=num_laps - desired_laps).index
-        balanced_df = balanced_df.drop(remove_indices)
-        print(f"Removed {num_laps - desired_laps} laps for driver {group['driver_name'].iloc[0]}")
+    #     remove_indices = group.sample(n=num_laps - desired_laps).index
+    #     balanced_df = balanced_df.drop(remove_indices)
+    #    print(f"Removed {num_laps - desired_laps} laps for driver {group['driver_name'].iloc[0]}")
 
 # Salvataggio dataset
 balanced_df.to_csv(r'./balanced_dataset.csv', index=False)
