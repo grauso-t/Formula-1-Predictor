@@ -1,0 +1,220 @@
+@font-face {
+    font-family: 'Formula1';
+    src: local('Formula1-Regular'), 
+         url('Fonts/Formula1-Regular.otf') format('opentype'); /* Cambiato da 'otf' a 'opentype' */
+    /* Aggiunta delle altre varianti del font */
+    font-weight: normal; /* Imposta il peso normale per il font Formula1-Regular */
+}
+
+/* Definisci altre varianti del font all'interno dello stesso @font-face */
+@font-face {
+    font-family: 'Formula1';
+    src: local('Formula1-Bold'), 
+         url('Fonts/Formula1-Bold.otf') format('opentype'); /* Cambiato da 'otf' a 'opentype' */
+    font-weight: bold; /* Imposta il peso del font come bold per Formula1-Bold */
+}
+
+@font-face {
+    font-family: 'Formula1';
+    src: local('Formula1-Wide'), 
+         url('Fonts/Formula1-Wide.otf') format('opentype'); /* Cambiato da 'otf' a 'opentype' */
+    /* Aggiungi altre definizioni per il font wide, se necessario */
+    /* Ricorda di specificare il font-weight appropriato */
+}
+
+
+body {
+    font-family: 'Formula1', Formula1-Regular;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"],
+select {
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    border-radius: 5px;
+    border: solid 2px #000000;
+    box-sizing: border-box;
+}
+
+input[type="text"]::placeholder {
+    color: #aaa;
+}
+
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+input[type="number"] {
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.grid-container-general{
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 2px black solid;
+    border-radius: 10pt 10pt 10pt 10pt;
+}
+
+.info-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.random, .delete{
+    color: #ef0000;
+    font-size: 2.5rem;
+}
+
+.random:hover, .delete:hover{
+    cursor: pointer;
+}
+
+.list-view {
+    overflow: hidden;
+}
+
+select {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+}
+
+.title {
+    font-family: 'Formula1', Formula1-Bold;
+    font-size: 2.3rem;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    text-align: center;
+    color: #ef0000;
+}
+
+#submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.Uppercase-text {
+    text-transform: uppercase;
+}
+
+.edit-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2.5rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 2px black solid;
+    border-radius: 10pt 10pt 10pt 10pt;
+}
+
+.circuit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100% !important;
+}
+
+.number-lap-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100% !important;
+}
+
+#number-lap {
+    width: 5rem;
+    display: inline-block;
+    height: 100% !important;
+    border: 2px solid #000;
+    padding: 8px; /* Aggiungi padding interno se necessario */
+    border-radius: 5px; /* Aggiungi bordi arrotondati se desiderato */
+}
+
+.weather-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100% !important;
+    flex-direction: column;
+}
+
+.button-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#submit-btn{
+    background-color: #ef0000;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+#leaderboard {
+    border-collapse: collapse;
+    width: 100%;
+    border: 2px solid #000000;
+    font-family: 'Formula1', Formula1-Regular;
+    font-size: 16px;
+    margin: 0 auto;
+    display: none;
+}
+
+#leaderboard table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #000000;
+    font-family: 'Formula1', Formula1-Regular;
+    font-size: 16px;
+}
+
+#leaderboard th, #leaderboard td {
+    padding: 8px;
+    text-align: center;
+}

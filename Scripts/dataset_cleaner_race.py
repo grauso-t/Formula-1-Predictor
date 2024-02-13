@@ -11,6 +11,7 @@ drivers = pd.read_csv(r'./Datasets/drivers.csv', low_memory=False)
 races = pd.read_csv(r'./Datasets/races.csv', low_memory=False)
 status = pd.read_csv(r'./Datasets/status.csv', low_memory=False)
 circuits = pd.read_csv(r'./Datasets/circuits.csv', low_memory=False)
+constructors = pd.read_csv(r'./Datasets/constructors.csv', low_memory=False)
 
 # Operazioni di merge e pulizia dei datasets
 merge1 = pd.merge(lap_times, drivers, how='left', on=['driverId'])
@@ -32,13 +33,30 @@ merge4 = merge4.rename(columns={'date': f'race_date'})
 merge5 = pd.merge(merge4, circuits, how='left', on=['circuitId'])
 merge5 = merge5.drop(['circuitRef', 'name', 'location', 'country', 'url'], axis=1)
 
+merge6 = pd.merge(merge5, constructors, how='left', on=['constructorId'])
+merge6 = merge6.rename(columns={'name': f'constructors_name'})
+merge6 = merge6.drop(['constructorRef', 'nationality','url'], axis=1)
 
+# Dizionario per conteggio totale delle partecipazioni del pilota
+driver_total_race_count = {}
 
+for index, row in merge6.iterrows():
+    driver = row['driver_name']
+    race_id = row['raceId']
+    if driver not in driver_total_race_count:
+        driver_total_race_count[driver] = {}
+    if race_id not in driver_total_race_count[driver]:
+        driver_total_race_count[driver][race_id] = len(driver_total_race_count[driver]) + 1
+    merge6.loc[index, 'experience'] = driver_total_race_count[driver][race_id]
 
+merge6['constructors_name'] = merge6['constructors_name'].apply(lambda x: 'Racing Point' if x=='Force India' else x)
+merge6['constructors_name'] = merge6['constructors_name'].apply(lambda x: 'Alfa Romeo' if x=='Sauber' else x)
+merge6['constructors_name'] = merge6['constructors_name'].apply(lambda x: 'Renault' if x=='Lotus F1' else x)
+merge6['constructors_name'] = merge6['constructors_name'].apply(lambda x: 'AlphaTauri' if x=='Toro Rosso' else x)
 
+ds_final = merge6[(merge6['race_date'] < '2022-01-01') & (merge6['race_date'] >= '2014-01-01')]
 
-
-ds_final = merge5[merge5['race_date'] >= '2022-01-01']
+ds_final.loc[:, 'time_lap'] = (ds_final['time_lap'] / 100).astype(int)
 
 grouped_ds = ds_final.groupby('raceId')
 
@@ -124,11 +142,8 @@ wmo_mapping = {
 final_results['weather_description'] = final_results['weather_code'].map(wmo_mapping)
 
 # Ordinamento del dataset
-new_order = ['raceId', 'driverId', 'driver_name', 'circuitId', 'circuit_name', 'race_date', 'time_race', 'lap', 'position_lap', 'time_lap', 'statusId', 'status', 'weather_code', 'weather_description']
+new_order = ['raceId', 'driverId', 'driver_name', 'experience', 'constructorId', 'constructors_name', 'circuitId', 'circuit_name', 'race_date', 'time_race', 'lap', 'position_lap', 'time_lap', 'statusId', 'status', 'weather_code', 'weather_description']
 final_results = final_results[new_order]
-
-# Conversione dei millisecondi in decimi di secondo
-# final_results['time_lap'] = final_results['time_lap'] / 100
 
 # Salvataggio del dataset finale
 final_results.to_csv('merged_dataset_races.csv', index=False)

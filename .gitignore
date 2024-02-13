@@ -1,3 +1,5 @@
 ./venv
 venv
 .cache.sqlite
+rf_model.pkl
+./rf_model.pkl
