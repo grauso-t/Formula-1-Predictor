@@ -1,5 +1,9 @@
 ./venv
 venv
+
+
 .cache.sqlite
 rf_model.pkl
-./rf_model.pkl
+gb_model.pkl
+dt_model.pkl
+lr_model.pkl
