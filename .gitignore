@@ -1,6 +1,7 @@
 ./venv
 venv
-
+./Scripts/__pycache__
+Scripts/__pycache__
 
 .cache.sqlite
 rf_model.pkl
