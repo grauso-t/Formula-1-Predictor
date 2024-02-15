@@ -19,9 +19,10 @@ In linea con il rinnovamento e il crescente interesse, citato nella \hyperref[Pr
 3. Estraete il file .zip in una nuova directory chiamata "Formula1Predictor";
 4. Aprite il terminale del vostro Personal Computer ed eseguite il seguente comando per entrare nella directory del progetto: 
 
-    cd ./path-fino-alla-cartella/Formula1Predictor
+   cd ./path-fino-alla-cartella/Formula1Predictor
 5. Installate tutte le librerie necessarie (disponibili nel file requirements.txt) in un solo passo eseguendo il seguente comando:
-...
+
+   pip install -r requirements.txt
 
 ## Istruzioni d'uso 📖
 
