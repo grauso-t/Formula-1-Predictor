@@ -37,6 +37,12 @@ In linea con il rinnovamento e il crescente interesse, citato nella \hyperref[Pr
 Buon divertimento!
  
 ## Istruzioni d'uso 📖
+Una volta avviata l'applicazione, vi ritroverete davanti alla seguente pagina web:
+
+<p align="center"> 
+    <img src="Media/Logo.png" alt="Logo" width="250" height="250">
+</p>
+
 
 ## Demo 📺
 Ecco qui una piccola demo della nostra applicazione:
