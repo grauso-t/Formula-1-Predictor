@@ -14,8 +14,8 @@ In linea con il rinnovamento e il crescente interesse, citato nella \hyperref[Pr
 ## Istruzioni d'uso ⚙️
 1. Installate l'ultima versione di [Python](https://www.python.org/) sul vostro Personal Computer;
 2. [Scaricate](https://github.com/John-64/Formula-1-Predictor/archive/refs/heads/main.zip) il progetto in formato .zip da questa repository;
-3. Estraete il file .zip in una nuova cartella chiamata "Formula1Predictor";
-4. Aprite il terminale del vostro Personal Computer ed eseguite il seguente comando: 
+3. Estraete il file .zip in una nuova directory chiamata "Formula1Predictor";
+4. Aprite il terminale del vostro Personal Computer ed eseguite il seguente comando per entrare nella directory del progetto: 
 
     cd ./path-fino-alla-cartella/Formula1Predictor
 5. Installate tutte le librerie necessarie (disponibili nel file requirements.txt) in un solo passo eseguendo il seguente comando:
