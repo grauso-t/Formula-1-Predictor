@@ -11,7 +11,7 @@ In linea con il rinnovamento e il crescente interesse, citato nella \hyperref[Pr
 - **Condizioni meteo**: viene selezionata la condizione meteo preferita;
 - **Numero di giri**: si sceglie il numero di giri della gara (minimo 1 e realisticamente massimo 100).
 
-## Istruzioni d'uso ⚙️
+## Installazione ⚙️
 1. Installate l'ultima versione di [Python](https://www.python.org/) sul vostro Personal Computer;
 2. [Scaricate](https://github.com/John-64/Formula-1-Predictor/archive/refs/heads/main.zip) il progetto in formato .zip da questa repository;
 3. Estraete il file .zip in una nuova directory chiamata "Formula1Predictor";
@@ -20,3 +20,7 @@ In linea con il rinnovamento e il crescente interesse, citato nella \hyperref[Pr
     cd ./path-fino-alla-cartella/Formula1Predictor
 5. Installate tutte le librerie necessarie (disponibili nel file requirements.txt) in un solo passo eseguendo il seguente comando:
 ...
+
+## Istruzioni d'uso 📖
+
+## Demo 📺
