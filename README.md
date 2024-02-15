@@ -1,3 +1,5 @@
+
+
 ### Perché questa applicazione? 🤔
 La Formula 1, ossia la massima categoria di vetture monoposto da corsa su circuito (definita dalla FIA), ha vissuto negli ultimi anni un'impressionante aumento di spettatori, passando dai circa 300.000 spettatori medi in ogni gara agli oltre 1.200.000 registrati nel 2023. L'aumento di interesse nella Formula 1 ha coinvolto diverse strategie di marketing e di comunicazione, tra cui quella relativa ai social network (in particolare su piattaforme come YouTube e Netflix) che hanno permesso alla F1 di raggiungere un pubblico più vasto e di coinvolgere gli appassionati in modi nuovi e innovativi. Tra le tante è importante citare la serie "Drive to Survive", realizzata da Netflix, la quale ha svolto un ruolo significativo nell'aumentare l'interesse per la Formula 1, soprattutto tra coloro che potrebbero non essere stati tradizionalmente fan dello sport, offrendo un dietro le quinte delle gare e delle vite dei piloti, rendendo il mondo della F1 più accessibile e coinvolgente per il grande pubblico. 
 
@@ -24,3 +26,4 @@ In linea con il rinnovamento e il crescente interesse, citato nella \hyperref[Pr
 ## Istruzioni d'uso 📖
 
 ## Demo 📺
+Ecco qui una piccola demo della nostra applicazione:
