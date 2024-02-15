@@ -1,10 +1,48 @@
 import pandas as pd
 import openmeteo_requests
 import requests_cache
-import matplotlib.pyplot as plt
 from retry_requests import retry
 
+# Mapping codice meteo
+wmo_mapping = {
+    0: 'Clear sky',
+    1: 'Clear sky',
+    2: 'Cloudy',
+    3: 'Cloudy',
+    4: 'Cloudy',
+    50: 'Rain',
+    51: 'Rain',
+    52: 'Rain',
+    53: 'Rain',
+    55: 'Rain',
+    60: 'Rain',
+    62: 'Rain',
+    63: 'Rain',
+    64: 'Rain',
+    65: 'Rain',
+    66: 'Rain',
+    67: 'Rain',
+    68: 'Rain',
+    
+    5: 'null',
+    10: 'null',
+    45: 'null',
+    56: 'null',
+    57: 'null',
+    58: 'null',
+    61: 'null',
+    70: 'null',
+    71: 'null',
+    72: 'null',
+    73: 'null',
+    74: 'null',
+    75: 'null',
+}
+
 def merger():
+    
+    print("Apertura file...")
+    
     # Apertura dei file datasets
     lap_times = pd.read_csv(r'./Datasets/lap_times.csv', low_memory=False)
     results = pd.read_csv(r'./Datasets/results.csv', low_memory=False)
@@ -12,6 +50,8 @@ def merger():
     races = pd.read_csv(r'./Datasets/races.csv', low_memory=False)
     status = pd.read_csv(r'./Datasets/status.csv', low_memory=False)
     circuits = pd.read_csv(r'./Datasets/circuits.csv', low_memory=False)
+
+    print("Merging...")
 
     # Operazioni di merge e pulizia dei datasets
     merge1 = pd.merge(lap_times, drivers, how='left', on=['driverId'])
@@ -40,6 +80,10 @@ def merger():
     return ds_final
 
 def meteoSearching(ds_final):
+    
+    print("Ricerca meteo...")
+    
+    # Raggruppamento per raceId
     grouped_ds = ds_final.groupby('raceId')
 
     # Configurazione delle API Open-Meteo
@@ -49,7 +93,7 @@ def meteoSearching(ds_final):
 
     final_results = pd.DataFrame()
 
-    # Iterazione sui gruppi, in modo da eseguire meno richieste alle API
+    # Iterazione
     for race_id, group_df in grouped_ds:
 
         latitude = str(group_df['lat'].iloc[0])
@@ -84,42 +128,6 @@ def meteoSearching(ds_final):
         
         final_results = final_results._append(group_df, ignore_index=True)
 
-    # Mapping codice meteo
-    wmo_mapping = {
-        0: 'Clear sky',
-        1: 'Clear sky',
-        2: 'Cloudy',
-        3: 'Cloudy',
-        4: 'Cloudy',
-        5: 'null',
-        10: 'null',
-        45: 'null',
-        50: 'Rain',
-        51: 'Rain',
-        52: 'Rain',
-        53: 'Rain',
-        54: 'null',
-        55: 'Rain',
-        56: 'null',
-        57: 'null',
-        58: 'null',
-        60: 'Rain',
-        61: 'null',
-        62: 'Rain',
-        63: 'Rain',
-        64: 'Rain',
-        65: 'Rain',
-        66: 'Rain',
-        67: 'Rain',
-        68: 'Rain',
-        70: 'null',
-        71: 'null',
-        72: 'null',
-        73: 'null',
-        74: 'null',
-        75: 'null',
-    }
-
     # Conversione dei weather_code in descrizione testuale
     final_results['weather_description'] = final_results['weather_code'].map(wmo_mapping)
     
@@ -128,9 +136,8 @@ def meteoSearching(ds_final):
 final_results = merger()
 final_results = meteoSearching(final_results)
 
-# Ordinamento del dataset
-new_order = ['raceId', 'driverId', 'driver_name', 'circuitId', 'circuit_name', 'race_date', 'time_race', 'lap', 'position_lap', 'time_lap', 'statusId', 'status', 'weather_code', 'weather_description']
-final_results = final_results[new_order]
+# Ordinamento del dataset 
+final_results = final_results[['raceId', 'driverId', 'driver_name', 'circuitId', 'circuit_name', 'race_date', 'time_race', 'lap', 'position_lap', 'time_lap', 'statusId', 'status', 'weather_code', 'weather_description']]
 
 # Calcola il numero di giri complessivi per ogni pilota
 total_laps_per_driver = final_results.groupby('driverId')['lap'].count()
@@ -141,5 +148,17 @@ filtered_drivers = total_laps_per_driver[total_laps_per_driver >= 1000]
 # Filtra il dataset originale mantenendo solo i giri dei piloti con almeno 1000 giri
 final_results = final_results[final_results['driverId'].isin(filtered_drivers.index)]
 
+# Calcola la lunghezza originale del dataframe
+original_length = len(final_results)
+
+# Rimuovi le righe con valori nulli
+final_results = final_results.dropna()
+
+# Calcola il numero di righe eliminate
+eliminated_rows = original_length - len(final_results)
+
 # Salvataggio del dataset finale
+print("Salvataggio dataset...")
 final_results.to_csv('merged_dataset_races.csv', index=False)
+
+print("Operazioni completate...")

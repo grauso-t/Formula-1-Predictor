@@ -2,7 +2,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
-from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import ExtraTreesRegressor
@@ -10,11 +9,12 @@ import oversampling
 import joblib
 
 # Caricamento dataset
+print("Apertura dataset...")
 data = pd.read_csv("./merged_dataset_races.csv")
 
 # Suddivisione dati in set di addestramento e test
+print("Suddivisione dataset...")
 train_data, test_data = train_test_split(data, test_size=0.22, random_state=42)
-
 train_data = oversampling.oversampling(train_data)
 
 # Variabili
@@ -24,7 +24,7 @@ y_train_resampled = train_data['time_lap']
 X_test = test_data[['driverId', 'circuitId', 'lap', 'weather_code']]
 y_test = test_data['time_lap']
 
-print("ExtraTreesRegressor...")
+print("Addestramento ExtraTreesRegressor...")
 
 # Addestramento del modello RandomForestRegressor
 et_model = ExtraTreesRegressor(n_estimators=100, random_state=0)
@@ -41,9 +41,9 @@ print("Accuracy (RF):", et_accuracy)
 # Salvataggio del modello
 joblib.dump(et_model, 'et_model.pkl')
 
-print("Modello Extra Trees Regressor addestrato e salvato con successo.")
+print("Modello Extra Trees Regressor addestrato e salvato con successo.\n")
 
-print("RandomForestRegressor...")
+print("Addestramento RandomForestRegressor...")
 
 # Addestramento del modello RandomForestRegressor
 rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
@@ -60,9 +60,9 @@ print("Accuracy (RF):", rf_accuracy)
 # Salvataggio del modello
 joblib.dump(rf_model, 'rf_model.pkl')
 
-print("Modello Random Forest Regressor addestrato e salvato con successo.")
+print("Modello Random Forest Regressor addestrato e salvato con successo. \n")
 
-print("Decision Tree...")
+print("Addestramento DecisionTreeRegressor...")
 
 # Addestramento del modello Decision Tree
 dt_model = DecisionTreeRegressor(random_state=42)
@@ -79,9 +79,9 @@ print("Accuracy (Decision Tree):", dt_accuracy)
 # Salvataggio del modello Decision Tree
 joblib.dump(dt_model, 'dt_model.pkl')
 
-print("Modello Decision Tree addestrato e salvato con successo.")
+print("Modello Decision Tree addestrato e salvato con successo.\n")
 
-print("Gradient Boosting...")
+print("Addestramento GradientBoostingRegressor...")
 
 # Addestramento del modello Gradient Boosting
 gb_model = GradientBoostingRegressor(random_state=42)
