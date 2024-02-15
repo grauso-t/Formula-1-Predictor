@@ -63,4 +63,5 @@ _In produzione_
 
 ### Credits 🙏
 - [F1](https://www.formula1.com/)
+- [Font](https://imjustcreative.com/download-f1-fonts-formula-1-fonts/2021/09/16)https://imjustcreative.com/download-f1-fonts-formula-1-fonts/2021/09/16
 - [Wikipedia](https://it.wikipedia.org/wiki/Formula_1)
