@@ -24,6 +24,14 @@ In linea con il rinnovamento e il crescente interesse, citato nella \hyperref[Pr
 
    pip install -r requirements.txt
 
+6. Se tutto è stato installato correttamente non resta altro che eseguire questo comando:
+   
+   python app.py
+   
+8. E cliccare al seguente [link](http://127.0.0.1:5000/) per usare l'applicazioen!
+
+Buon divertimento!
+ 
 ## Istruzioni d'uso 📖
 
 ## Demo 📺
