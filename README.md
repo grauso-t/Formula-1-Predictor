@@ -17,6 +17,6 @@ In linea con il rinnovamento e il crescente interesse, citato nella \hyperref[Pr
 3. Estraete il file .zip in una nuova cartella chiamata "Formula1Predictor";
 4. Aprite il terminale del vostro Personal Computer ed eseguite il seguente comando: 
 
-cd ./path-fino-alla-cartella/Formula1Predictor
+   --> cd ./path-fino-alla-cartella/Formula1Predictor
 5. Installate tutte le librerie necessarie (disponibili nel file requirements.txt) in un solo passo eseguendo il seguente comando:
 ...
