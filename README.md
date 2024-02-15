@@ -40,7 +40,7 @@ Buon divertimento!
 Una volta avviata l'applicazione, vi ritroverete davanti alla seguente pagina web:
 
 <p align="center"> 
-    <img src="Media/Logo.png" alt="Logo" width="250" height="250">
+    <img src="Media/Home.png" alt="Logo" width="450">
 </p>
 
 
