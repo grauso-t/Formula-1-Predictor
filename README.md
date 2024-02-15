@@ -62,5 +62,5 @@ Ecco qui una piccola demo della nostra applicazione:
 In produzione
 
 ### Credits 🙏
-- [F1](https://www.formula1.com/)https://www.formula1.com/
-- [Wikipedia](https://it.wikipedia.org/wiki/Formula_1)https://it.wikipedia.org/wiki/Formula_1
+- [F1](https://www.formula1.com/)
+- [Wikipedia](https://it.wikipedia.org/wiki/Formula_1)
