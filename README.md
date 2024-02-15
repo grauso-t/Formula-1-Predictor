@@ -5,9 +5,10 @@ La Formula 1, ossia la massima categoria di vetture monoposto da corsa su circui
 
 L'ammodernamento generale della Formula 1 non si è limitato solo alla comunicazione e al marketing, ma ha coinvolto anche miglioramenti tecnologici, regolamentari e di intrattenimento durante le gare stesse. Questi cambiamenti hanno reso lo sport più competitivo, avvincente e spettacolare, contribuendo così ad attrarre un numero sempre maggiore di spettatori.
 
-<div style="display:flex; align-items:center; justify-content:center;">
+<p align="center"> 
     <img src="Media/Logo.png" alt="Logo" width="250" height="250">
-</div>
+</p>
+
 # Formula 1 Predictor 🏎️
 In linea con il rinnovamento e il crescente interesse, citato nella \hyperref[Prefazione]{prefazione}, abbiamo pensato di creare un'applicazione che possa stimolare ulteriormente l'interesse verso questo sport, dando la possibilità agli utenti di simulare delle vere e proprie gare di F1. L'obiettivo è quello di realizzare un'applicazione in grado di simulare un'intera gara di F1 prevedendo, sulla base di parametri scelti dall'utente, l'ordine di arrivo dei piloti in griglia. I parametri selezionabili dall'utente sono:
 
