@@ -40,9 +40,15 @@ Buon divertimento!
 Una volta avviata l'applicazione, vi ritroverete davanti alla seguente pagina web:
 
 <p align="center"> 
-    <img src="Media/Home.png" alt="Logo" width="450">
+    <img src="Media/Home.png" alt="Logo" width="650">
 </p>
 
+Impostate quindi i parametri che desiderate, ad esempio:
+
+
+<p align="center"> 
+    <img src="Media/DriverSelected.png" alt="Logo" width="650">
+</p>
 
 ## Demo 📺
 Ecco qui una piccola demo della nostra applicazione:
