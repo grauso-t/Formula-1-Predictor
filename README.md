@@ -59,7 +59,7 @@ E cliccate successivamente sul pulsante "Predict" per simulare la gara!
 ## Demo 📺
 Ecco qui una piccola demo della nostra applicazione:
 
-In produzione
+_In produzione_
 
 ### Credits 🙏
 - [F1](https://www.formula1.com/)
