@@ -5,7 +5,7 @@ La Formula 1, ossia la massima categoria di vetture monoposto da corsa su circui
 
 L'ammodernamento generale della Formula 1 non si è limitato solo alla comunicazione e al marketing, ma ha coinvolto anche miglioramenti tecnologici, regolamentari e di intrattenimento durante le gare stesse. Questi cambiamenti hanno reso lo sport più competitivo, avvincente e spettacolare, contribuendo così ad attrarre un numero sempre maggiore di spettatori.
 
-<div style="text-align:center;">
+<div style="display:flex; align-items:center; justify-content:center;">
     <img src="Media/Logo.png" alt="Logo" width="250" height="250">
 </div>
 # Formula 1 Predictor 🏎️
