@@ -34,7 +34,6 @@ Per installare e avviare l'applicazione, si prega di seguire i seguenti passaggi
     ```bash
     python app.py
     ```
-7.  **Accesso**: L'applicazione sarà accessibile tramite il browser web al seguente [link](http://127.0.0.1:5000/).
 
 ### Istruzioni per l'Uso
 
