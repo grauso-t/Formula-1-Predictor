@@ -4,7 +4,7 @@
 
 ### Introduzione
 
-La Formula 1 ha vissuto una crescita di popolarità senza precedenti, spinta da innovazioni nel marketing e nella comunicazione che hanno attratto un vasto pubblico, specialmente attraverso piattaforme come Netflix e la serie "Drive to Survive". ✨ In questo contesto di rinnovato interesse, abbiamo creato un'applicazione che ti permette di immergerti completamente nel mondo delle corse, simulando gare di F1 basate sui tuoi parametri.
+La Formula 1 ha vissuto una crescita di popolarità senza precedenti, spinta da innovazioni nel marketing e nella comunicazione che hanno attratto un vasto pubblico, specialmente attraverso piattaforme come Netflix e la serie "Drive to Survive". In questo contesto di rinnovato interesse, abbiamo creato un'applicazione che ti permette di immergerti completamente nel mondo delle corse, simulando gare di F1 basate sui tuoi parametri.
 
 ### Descrizione dell'Applicazione
 
